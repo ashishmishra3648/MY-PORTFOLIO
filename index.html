@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Ashish Mishra — Portfolio</title>
+	<meta name="description" content="Portfolio website of Ashish Mishra. Projects, experience, skills, and contact.">
+	<meta name="theme-color" content="#0f172a">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+	<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+	<link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+	<div id="top"></div>
+	<header class="site-header">
+		<div class="container">
+			<a class="logo" href="#top">AM</a>
+			<nav class="nav" id="nav">
+				<button class="nav__toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+					<span></span><span></span><span></span>
+				</button>
+					<ul class="nav__list" id="navList">
+						<li><a href="#top">About</a></li>
+					<li><a href="#experience">Experience</a></li>
+					<li><a href="#projects">Projects</a></li>
+					<li><a href="#skills">Skills</a></li>
+					<li><a href="#education">Education</a></li>
+					<li><a href="#contact">Contact</a></li>
+					<li><a class="btn btn--sm" href="MY-RESUME.pdf" target="_blank" rel="noopener">Resume</a></li>
+				</ul>
+			</nav>
+			<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode"></button>
+		</div>
+	</header>
+
+	<main>
+		<section class="hero section">
+			<div class="container grid grid--2">
+				<div class="hero__content">
+					<p class="eyebrow type-in" data-stagger>Hello I'm</p>
+					<h1 class="hero__title gradient-text name-animate type-in" data-stagger>ASHISH MISHRA</h1>
+					<p class="hero__subtitle">I'm a highly motivated Computer Science graduate specializing in Data Science with a strong foundation in Machine Learning, Data Science, and currently learning Java Full Stack Development. Proven success in collaborative projects, hackathons, and internships, with hands-on experience in building Machine Learning models and web applications.</p>
+					<div class="hero__cta">
+						<a class="btn" href="#projects">View Projects</a>
+						<a class="btn btn--ghost" href="MY-RESUME.pdf" target="_blank" rel="noopener">Download Resume</a>
+					</div>
+					<ul class="social">
+						<li><a href="https://www.linkedin.com/in/ashish-mishra3648/" target="_blank" rel="noopener" aria-label="LinkedIn">LinkedIn</a></li>
+						<li><a href="https://github.com/ashishmishra3648" target="_blank" rel="noopener" aria-label="GitHub">GitHub</a></li>
+					</ul>
+				</div>
+				<div class="hero__media">
+					<img class="avatar-img" src="profile.jpg" alt="Profile photo" width="160" height="160" loading="eager">
+				</div>
+			</div>
+		</section>
+
+		<section id="experience" class="section section--alt">
+			<div class="container">
+				<h2 class="reveal">Experience</h2>
+				<div class="timeline reveal" id="experienceList">
+					<article class="timeline__item reveal">
+						<header>
+							<h3>IIT Madras Internship — AIoT</h3>
+							<p class="meta">Top Engineers in association with IIT Madras • Sept 2023</p>
+						</header>
+						<ul>
+							<li>Completed a 7-day International Internship on Artificial Intelligence of Things (AIoT).</li>
+							<li>Gained practical knowledge in integrating AI with IoT applications.</li>
+							<li>Participated in hands-on sessions and interactive discussions via Google Meet, focusing on real-world implementations.</li>
+							<li>Collaborated with international peers to explore cutting-edge technologies and cross-industry applications.</li>
+						</ul>
+						<p><a href="https://drive.google.com/file/d/1r7C3tNRgGd_k4CXt3DmSBndhcJ0-A9k7/view" target="_blank" rel="noopener">View certificate</a></p>
+					</article>
+					<article class="timeline__item reveal">
+						<header>
+							<h3>Python Developer Intern — Codespeedy Technology Pvt. Ltd.</h3>
+							<p class="meta">Sep 2024 — Mar 2025</p>
+						</header>
+						<ul>
+							<li>Solved Python tasks and authored tutorial-style explanations.</li>
+							<li>Focused on hands-on coding, strengthening problem-solving and reasoning.</li>
+							<li>Strictly followed anti-plagiarism and no AI-generated content guidelines to deliver original, high-quality work.</li>
+						</ul>
+						<p><a href="https://drive.google.com/file/d/1Z9yGGRza4DHR3m2zfMFdG0aVbgl9-DRA/view?usp=drivesdk" target="_blank" rel="noopener">View certificate</a></p>
+					</article>
+				</div>
+			</div>
+		</section>
+
+		<section id="projects" class="section">
+			<div class="container">
+				<h2 class="reveal">Projects</h2>
+				<div class="project-slider-wrapper">
+					<button class="project-arrow project-arrow--left" aria-label="Previous project">&#8592;</button>
+					<div class="project-slider" id="projectSlider">
+						<article class="card reveal is-active">
+							<h3>🏨 Hotel Booking App</h3>
+							<p>
+								A full-featured hotel booking platform with search, filters, room details, and a
+								secure checkout. Built with a responsive, mobile-first UI and attention to
+								performance.
+							</p>
+							<ul class="list">
+								<li>User auth and protected booking flow</li>
+								<li>Date-range availability, pricing, and booking summary</li>
+								<li>Clean card/grid layout with fast client-side routing</li>
+								<li>Tech: HTML, CSS, JavaScript (can plug into any backend API)</li>
+							</ul>
+							<div class="card__actions">
+								<a class="btn btn--sm" href="https://github.com/ashishmishra3648/hotel-booking-app" target="_blank" rel="noopener">Code</a>
+							</div>
+						</article>
+						<article class="card reveal">
+							<h3>📈 Stock Market Predictor</h3>
+							<p>Developed a predictive model to forecast stock market prices using K-Nearest Neighbors (K-NN) for both classification and regression tasks.</p>
+							<ul class="list">
+								<li>Data preprocessing and visualization for stock trends</li>
+								<li>Implemented K-NN for price prediction and trend classification</li>
+								<li>Model evaluation with validation metrics</li>
+								<li>Tech: Python, scikit-learn, pandas, matplotlib</li>
+							</ul>
+							<div class="card__actions">
+								<a class="btn btn--sm" href="https://drive.google.com/drive/u/1/folders/13VsGKBk5_Dj1fDitCArgYQG7OI1oHIRW" target="_blank" rel="noopener">Code</a>
+							</div>
+						</article>
+						<article class="card reveal">
+							<h3>📰 Fake News Detector</h3>
+							<p>Built a robust machine learning model to identify and classify fake news articles using multiple algorithms for high accuracy.</p>
+							<ul class="list">
+								<li>Text data cleaning and feature extraction (TF-IDF, N-grams)</li>
+								<li>Tested Logistic Regression, Decision Tree, Random Forest, Gradient Boosting</li>
+								<li>Emphasis on detection precision and recall</li>
+								<li>Tech: Python, scikit-learn, pandas, nltk</li>
+							</ul>
+							<div class="card__actions">
+								<a class="btn btn--sm" href="https://drive.google.com/drive/u/1/folders/13VsGKBk5_Dj1fDitCArgYQG7OI1oHIRW" target="_blank" rel="noopener">Code</a>
+							</div>
+						</article>
+						<article class="card reveal">
+							<h3>🍷 Wine Quality Predictor</h3>
+							<p>Created a predictive model to assess the quality of wine based on its chemical properties using supervised learning algorithms.</p>
+							<ul class="list">
+								<li>Data exploration and feature engineering for relevant insights</li>
+								<li>Built, validated, and cross-validated regression/classification models</li>
+								<li>Evaluation using metrics like accuracy, RMSE, and MAE</li>
+								<li>Tech: Python, scikit-learn, pandas, seaborn</li>
+							</ul>
+							<div class="card__actions">
+								<a class="btn btn--sm" href="https://drive.google.com/drive/u/1/folders/13VsGKBk5_Dj1fDitCArgYQG7OI1oHIRW" target="_blank" rel="noopener">Code</a>
+							</div>
+						</article>
+					</div>
+					<button class="project-arrow project-arrow--right" aria-label="Next project">&#8594;</button>
+				</div>
+			</div>
+		</section>
+
+		<section id="skills" class="section section--alt">
+			<div class="container">
+				<h2 class="reveal">Skills</h2>
+				<div class="skills-grid">
+					<article class="skill-card reveal">
+						<h3>Core & Tools</h3>
+						<ul class="chips" id="skillsList">
+							<li class="chip">Machine Learning</li>
+							<li class="chip">Data Science</li>
+							<li class="chip">Google Colab</li>
+							<li class="chip">Jupyter Notebook</li>
+							<li class="chip">SQL</li>
+							<li class="chip">Java</li>
+							<li class="chip">Tableau (Basic)</li>
+							<li class="chip">JDBC</li>
+							<li class="chip">Prompt Engineering</li>
+						</ul>
+					</article>
+					<article class="skill-card reveal">
+						<h3>Java Focus</h3>
+						<ul class="chips">
+							<li class="chip chip--brand">Core Java</li>
+							<li class="chip chip--brand">OOPS</li>
+							<li class="chip chip--brand">Data Structures</li>
+							<li class="chip chip--brand">Exception Handling</li>
+						</ul>
+					</article>
+				</div>
+			</div>
+		</section>
+
+		<section id="education" class="section">
+			<div class="container">
+				<h2 class="reveal">Education</h2>
+				<ul class="list reveal" id="educationList">
+					<li>
+						<strong>Bachelor of Technology (B.Tech)</strong> — SRM Institute of Science and Technology, KTR, Chennai — <em>CGPA: 8.66</em>
+					</li>
+					<li>
+						<strong>Senior Secondary (XII)</strong> — S.B.P Vidya Vihar Public School, Katihar, Bihar — <em>93.6%</em>
+					</li>
+					<li>
+						<strong>Secondary (X)</strong> — Vidya Vihar Residential School, Purnia, Bihar — <em>78.6%</em>
+					</li>
+				</ul>
+			</div>
+		</section>
+
+		<section id="contact" class="section section--alt">
+			<div class="container">
+				<h2 class="reveal">Contact</h2>
+				<p class="reveal">If you’d like to collaborate or just say hi, my inbox is open.</p>
+				<div class="contact reveal">
+					<a class="btn" href="mailto:am8419941@gmail.com">Email Me</a>
+					<a class="btn btn--ghost" href="MY-RESUME.pdf" target="_blank" rel="noopener">View Resume</a>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="site-footer">
+		<div class="container">
+			<p>© <span id="year"></span> Ashish Mishra. All rights reserved.</p>
+		</div>
+	</footer>
+
+	<script src="assets/js/main.js"></script>
+</body>
+</html>
+
