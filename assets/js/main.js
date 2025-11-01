@@ -12,66 +12,65 @@
 			navList.classList.toggle('is-open');
 		});
 		// Close on link click
-		Array.prototype.forEach.call(navList.querySelectorAll('a'), function (a) {
-			a.addEventListener('click', function () {
-				navList.classList.remove('is-open');
-				navToggle.setAttribute('aria-expanded', 'false');
-			});
-		});
-	}
-
-	// Theme toggle (persisted)
-	var themeToggle = document.getElementById('themeToggle');
-	var stored = localStorage.getItem('theme');
-	if (stored === 'light') document.documentElement.classList.add('light');
-	if (themeToggle) {
-		themeToggle.addEventListener('click', function () {
-			document.documentElement.classList.toggle('light');
-			var isLight = document.documentElement.classList.contains('light');
-			localStorage.setItem('theme', isLight ? 'light' : 'dark');
-		});
-	}
-
-	// Reveal on scroll (re-trigger on every entry)
-	var observer = new IntersectionObserver(function (entries) {
-		entries.forEach(function (entry) {
-			if (entry.isIntersecting) {
-				entry.target.classList.add('reveal--visible');
-			} else {
-				entry.target.classList.remove('reveal--visible');
+    
+				grad.addColorStop(0.5, 'hsla(' + Math.floor((p.hue+30)%360) + ',80%,55%, ' + (p.alpha*0.12) + ')');
+				grad.addColorStop(1, 'rgba(0,0,0,0)');
+				ctx.fillStyle = grad;
+				ctx.beginPath(); ctx.arc(p.x, p.y, p.r * 6, 0, Math.PI * 2); ctx.fill();
 			}
-		});
-	}, { threshold: 0.12 });
-	Array.prototype.forEach.call(document.querySelectorAll('.reveal'), function (el) {
-		observer.observe(el);
-	});
-
-	// Staggered headline animation for greeting and name
-	function applyStagger(el, opts) {
-		if (!el) return;
-		var text = el.textContent;
-		var mode = (opts && opts.mode) || 'words';
-		var unitArray;
-		if (mode === 'chars') {
-			unitArray = text.split('');
-		} else {
-			unitArray = text.split(/(\s+)/); // keep spaces
 		}
-		var html = unitArray.map(function (unit) {
-			if (unit.trim() === '') return unit;
-			return '<span>' + unit + '</span>';
-		}).join('');
-		el.innerHTML = html;
-		el.classList.add('stagger');
-		var delay = (opts && opts.delay) || 90;
-		Array.prototype.forEach.call(el.querySelectorAll('span'), function (span, i) {
-			span.style.animationDelay = (i * delay) + 'ms';
-		});
-	}
 
-	applyStagger(document.querySelector('[data-stagger].eyebrow'), { mode: 'chars', delay: 40 });
-	applyStagger(document.querySelector('.hero__title.name-animate[data-stagger]'), { mode: 'chars', delay: 40 });
-})();
+		function drawNoise() {
+			if (!noisePattern) noisePattern = createNoisePattern(180);
+			ctx.globalCompositeOperation = 'overlay';
+			ctx.globalAlpha = 0.06;
+			ctx.fillStyle = noisePattern;
+			ctx.fillRect(0, 0, w, h);
+			ctx.globalAlpha = 1;
+		}
+
+		var raf = null;
+		function loop() {
+			if (prefersReduce) {
+				// static render once
+				ctx.clearRect(0,0,w,h);
+				drawSpheres();
+				drawParticles();
+				drawNoise();
+				return;
+			}
+			ctx.clearRect(0, 0, w, h);
+			drawSpheres();
+			drawParticles();
+			drawNoise();
+			raf = requestAnimationFrame(loop);
+		}
+
+		// init
+		resize();
+		noisePattern = createNoisePattern(180);
+		initSpheres();
+		initParticles();
+		if (!prefersReduce) raf = requestAnimationFrame(loop); else loop();
+
+		// events
+		var resizeTO;
+		window.addEventListener('resize', function () {
+			clearTimeout(resizeTO);
+			resizeTO = setTimeout(function () { resize(); initSpheres(); initParticles(); }, 140);
+		});
+
+		window.addEventListener('mousemove', function (e) { mouse.x = e.clientX; mouse.y = e.clientY; });
+		window.addEventListener('mouseleave', function () { mouse.x = -9999; mouse.y = -9999; });
+
+		document.addEventListener('visibilitychange', function () {
+			if (document.hidden) { if (raf) cancelAnimationFrame(raf); raf = null; }
+			else { if (!prefersReduce && !raf) raf = requestAnimationFrame(loop); }
+		});
+
+		// expose controls for debugging
+		window.__bgWaves = { spheres: spheres, particles: particles };
+	})();
 
 // Project slider/carousel
 (function () {
@@ -123,6 +122,137 @@
 		if (e.key === 'ArrowRight') { goNext(); }
 		if (e.key === 'ArrowLeft') { goPrev(); }
 	});
+})();
+
+
+// avatar hover/raise only: no JS needed (kept intentionally minimal for accessibility)
+/* Background particles canvas */
+(function () {
+	var canvas = document.getElementById('bgParticles');
+	if (!canvas) return;
+
+	var ctx = canvas.getContext('2d');
+	var particles = [];
+	var vpW = 0, vpH = 0;
+	var DPR = Math.max(1, window.devicePixelRatio || 1);
+
+	var prefersReduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+	function resize() {
+		vpW = canvas.clientWidth = window.innerWidth;
+		vpH = canvas.clientHeight = window.innerHeight;
+		canvas.width = Math.floor(vpW * DPR);
+		canvas.height = Math.floor(vpH * DPR);
+		ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+	}
+
+	function rand(min, max) { return Math.random() * (max - min) + min; }
+
+	function createParticles() {
+		particles = [];
+		var baseCount = Math.round((vpW * vpH) / 90000); // density scaling
+		var count = Math.min(120, Math.max(18, baseCount));
+		// reduce on small screens
+		if (vpW < 700) count = Math.round(count * 0.45);
+		for (var i = 0; i < count; i++) {
+			particles.push({
+				x: rand(0, vpW),
+				y: rand(0, vpH),
+				vx: rand(-0.25, 0.25),
+				vy: rand(-0.2, 0.2),
+				r: rand(1.2, 4.5),
+				alpha: rand(0.12, 0.9),
+				hue: rand(200, 320)
+			});
+		}
+	}
+
+	function draw(now) {
+		if (prefersReduce) return; // don't animate
+		ctx.clearRect(0, 0, vpW, vpH);
+		// soft glow backdrop
+		ctx.globalCompositeOperation = 'lighter';
+		for (var i = 0; i < particles.length; i++) {
+			var p = particles[i];
+			// move
+			p.x += p.vx;
+			p.y += p.vy;
+			// wrap
+			if (p.x < -40) p.x = vpW + 40;
+			if (p.x > vpW + 40) p.x = -40;
+			if (p.y < -40) p.y = vpH + 40;
+			if (p.y > vpH + 40) p.y = -40;
+
+			// draw glow circle
+			var grd = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 10);
+			var colorA = 'hsla(' + Math.floor(p.hue) + ', 85%, 60%, ' + (p.alpha * 0.35) + ')';
+			var colorB = 'hsla(' + Math.floor((p.hue + 40) % 360) + ', 85%, 55%, 0)';
+			grd.addColorStop(0, colorA);
+			grd.addColorStop(0.3, colorA);
+			grd.addColorStop(1, colorB);
+			ctx.fillStyle = grd;
+			ctx.beginPath();
+			ctx.arc(p.x, p.y, p.r * 8, 0, Math.PI * 2);
+			ctx.fill();
+		}
+
+		// subtle connections for nearby particles
+		ctx.globalCompositeOperation = 'source-over';
+		ctx.lineWidth = 0.6;
+		for (var a = 0; a < particles.length; a++) {
+			for (var b = a + 1; b < particles.length; b++) {
+				var p1 = particles[a], p2 = particles[b];
+				var dx = p1.x - p2.x, dy = p1.y - p2.y;
+				var dist = Math.sqrt(dx * dx + dy * dy);
+				if (dist < 120) {
+					var t = 1 - (dist / 120);
+					ctx.strokeStyle = 'rgba(120,170,255,' + (t * 0.06) + ')';
+					ctx.beginPath();
+					ctx.moveTo(p1.x, p1.y);
+					ctx.lineTo(p2.x, p2.y);
+					ctx.stroke();
+				}
+			}
+		}
+
+		raf = requestAnimationFrame(draw);
+	}
+
+	var raf = null;
+	function start() {
+		if (prefersReduce) return;
+		if (raf) cancelAnimationFrame(raf);
+		raf = requestAnimationFrame(draw);
+	}
+
+	function stop() {
+		if (raf) cancelAnimationFrame(raf);
+		raf = null;
+	}
+
+	// init
+	resize();
+	createParticles();
+	start();
+
+	// responsive and visibility handling
+	var resizeTO;
+	window.addEventListener('resize', function () {
+		clearTimeout(resizeTO);
+		resizeTO = setTimeout(function () {
+			resize();
+			createParticles();
+		}, 120);
+	});
+
+	// pause when tab hidden to save CPU
+	document.addEventListener('visibilitychange', function () {
+		if (document.hidden) stop(); else start();
+	});
+
+	// expose for debugging (optional)
+	window.__bgParticles = { restart: function(){ createParticles(); start(); }, stop: stop };
+
 })();
 
 
